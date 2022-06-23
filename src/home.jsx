@@ -4,11 +4,15 @@ import { userContext } from "./App";
 import Classes from "./classes";
 import Axios from "axios";
 import Homework from "./homework";
-import Tasks from "./tasks";
+import Goals from "./goals";
 
 const Home = () => {
   const [classesLoading, setClassesLoading] = useState(true);
   const [classes, setClasses] = useState([{}]);
+  const [homeworkLoading, setHomeworkLoading] = useState(true);
+  const [homework, setHomework] = useState([{}]);
+  const [goalsLoading, setGoalsLoading] = useState(true);
+  const [goals, setGoals] = useState([{}]);
 
   var user = useContext(userContext);
 
@@ -29,12 +33,25 @@ const Home = () => {
       });
   }
 
+  if (homeworkLoading) {
+    Axios.get("http://localhost:5000/homework", {
+      params: {
+        email: user.email,
+      },
+    })
+      .then((res) => {
+        setHomework(res.data);
+        setHomeworkLoading(false);
+      })
+      .catch(console.log("Failed to load homework"));
+  }
+
   return (
     <Container className="p-4">
       <h1>Hi, {user.name}.</h1>
       <Classes isLoading={classesLoading} data={classes} />
-      <Homework isLoading={false} data={{}} />
-      <Tasks />
+      <Homework isLoading={homeworkLoading} data={homework} />
+      <Goals isLoading={goalsLoading} data={goals} />
     </Container>
   );
 };

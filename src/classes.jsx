@@ -1,10 +1,4 @@
-import {
-  Container,
-  Card,
-  Button,
-  Spinner,
-  ListGroupItem,
-} from "react-bootstrap";
+import { Container, Card, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./classes.css";
 
@@ -48,7 +42,11 @@ const Classes = (props) => {
                     {course.code}
                     <Button>Edit Class</Button>
                   </Card.Title>
-                  <Card.Text>{course.location}</Card.Text>
+                  <Card.Text>
+                    {course.location}
+                    <br></br>
+                    {"Exams:"}
+                  </Card.Text>
                 </Card.Body>
               </Card>
             </div>

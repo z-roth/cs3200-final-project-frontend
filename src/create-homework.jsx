@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { userContext } from "./App";
 import { useNavigate } from "react-router-dom";
-import { Container, Form } from "react-bootstrap";
+import { Container, Form, Button } from "react-bootstrap";
 import Axios from "axios";
 
 const CreateHomework = (props) => {
@@ -74,6 +74,9 @@ const CreateHomework = (props) => {
           <Form.Group className="mb-3">
             <Form.Label>Homework Class</Form.Label>
             <Form.Select onChange={(e) => setCourse(e.target.value)}>
+              <option disabled selected value>
+                Select Class
+              </option>
               {classes.map((c) => (
                 <option>{c.code}</option>
               ))}
@@ -101,6 +104,9 @@ const CreateHomework = (props) => {
               onChange={(e) => setDueTime(e.target.value)}
             ></Form.Control>
           </Form.Group>
+          <Button type="submit" className="mt-3">
+            Submit
+          </Button>
         </Form>
       )}
     </Container>

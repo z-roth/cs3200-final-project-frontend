@@ -1,0 +1,10 @@
+.task {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
