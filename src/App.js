@@ -4,17 +4,17 @@ import "./App.css";
 import Login from "./login.jsx";
 import Signup from "./signup";
 import Home from "./home";
-import { useNavigate } from "react-router-dom";
 import CreateClass from "./create-class";
 import CreateHomework from "./create-homework";
-import Axios from "axios";
+import CreateGoal from "./create-goal";
+import EditClass from "./edit-class";
+import EditHomework from "./edit-homework";
+import EditGoal from "./edit-goal";
 
 const userContext = createContext({});
 
 function App() {
   const [user, setUser] = useState({ name: "", email: "" });
-
-  console.log(user);
   const isLoggedIn = user.email !== "";
 
   return (
@@ -28,6 +28,10 @@ function App() {
         />
         <Route path="/create-class" element={<CreateClass />} />
         <Route path="/create-homework" element={<CreateHomework />} />
+        <Route path="/create-goal" element={<CreateGoal />} />
+        <Route path="/edit-class" element={<EditClass />} />
+        <Route path="/edit-homework" element={<EditHomework />} />
+        <Route path="/edit-goal" element={<EditGoal />} />
       </Routes>
     </userContext.Provider>
   );

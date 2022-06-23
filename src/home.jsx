@@ -46,6 +46,20 @@ const Home = () => {
       .catch(console.log("Failed to load homework"));
   }
 
+  if (goalsLoading) {
+    Axios.get("http://localhost:5000/goals", {
+      params: {
+        email: user.email,
+      },
+    })
+      .then((res) => {
+        setGoals(res.data);
+        console.log("Goals:", res.data);
+        setGoalsLoading(false);
+      })
+      .catch(console.log("Failed to load goals"));
+  }
+
   return (
     <Container className="p-4">
       <h1>Hi, {user.name}.</h1>

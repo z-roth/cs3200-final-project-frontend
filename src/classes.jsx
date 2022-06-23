@@ -7,6 +7,24 @@ const Classes = (props) => {
   const data = props.data;
   const loading = props.isLoading;
 
+  const formatDays = (daysOfWeek) => {
+    const days = new Map();
+    days.set("M", "Monday");
+    days.set("T", "Tuesday");
+    days.set("W", "Wednesday");
+    days.set("H", "Thursday");
+    days.set("F", "Friday");
+    days.set("S", "Saturday");
+    days.set("U", "Sunday");
+
+    return daysOfWeek
+      .split("")
+      .map((day) => {
+        return days.get(day);
+      })
+      .join(", ");
+  };
+
   console.log(data);
   console.log(loading);
 
@@ -33,14 +51,24 @@ const Classes = (props) => {
         data.map((course) => {
           return (
             <div className="class-container">
-              {course.startTime} - {course.endTime}
+              <b>
+                {course.startTime.substring(0, 5)} -{" "}
+                {course.endTime.substring(0, 5)}
+              </b>{" "}
+              {formatDays(course.daysOfWeek)}
               <Card>
                 <Card.Body>
                   <Card.Title className="class-title">
                     <b>{course.name}</b>
                     {"  "}
                     {course.code}
-                    <Button>Edit Class</Button>
+                    <Button
+                      onClick={() => {
+                        navigate("/edit-class", { state: course });
+                      }}
+                    >
+                      Edit Class
+                    </Button>
                   </Card.Title>
                   <Card.Text>
                     {course.location}
