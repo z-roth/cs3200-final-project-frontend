@@ -27,7 +27,7 @@ const Goals = (props) => {
           <Card key={goal.name} className="task">
             <Card.Header className="goal">
               <Form.Check label={goal.name} checked={goal.isDone} />
-              <Button>Edit Goal</Button>
+              <Button onClick={() => navigate("/edit-goal")}>Edit Goal</Button>
             </Card.Header>
           </Card>
         );

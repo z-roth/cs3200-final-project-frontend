@@ -1,9 +1,10 @@
 import { useLocation } from "react-router-dom";
+import { Container } from "react-bootstrap";
 
 const EditGoal = () => {
   const { state } = useLocation();
-  console.log(state);
-  return <p>Yeet</p>;
+
+  return <Container></Container>;
 };
 
 export default EditGoal;

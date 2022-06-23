@@ -17,15 +17,18 @@ const Login = (props) => {
       },
     })
       .then((res) => {
-        if (res.data[0].email === email && res.data[0].password === password) {
-          alert("Successfully signed in.");
-          props.setUser({ email: res.data[0].email, name: res.data[0].name });
-          navigate("/");
+        const name = Object.values(res.data[0])[0];
+        if (name == null) {
+          alert("Error signing in with provided credentials");
         } else {
-          alert("Unable to sign in with provided credentials.");
+          alert("Successfully signed in.");
+          navigate("/");
+          props.setUser({ email: email, name: name });
         }
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        alert("Error signing in");
+      });
   };
 
   return (

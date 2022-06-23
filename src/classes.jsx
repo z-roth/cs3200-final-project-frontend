@@ -42,11 +42,7 @@ const Classes = (props) => {
         </Button>
       </div>
       {data.length === 0 ? (
-        <Card className="class-container">
-          <Card.Title className="class-title">
-            No more classes today.
-          </Card.Title>
-        </Card>
+        <h5>No classes to display.</h5>
       ) : (
         data.map((course) => {
           return (

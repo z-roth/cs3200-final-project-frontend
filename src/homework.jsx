@@ -48,7 +48,7 @@ const Homework = (props) => {
           Create New Homework
         </Button>
       </div>
-      {data.length == 0 ? (
+      {data.length === 0 ? (
         <h5>No homework to display.</h5>
       ) : (
         data.map((hw) => {

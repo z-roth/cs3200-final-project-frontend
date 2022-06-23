@@ -10,6 +10,7 @@ import CreateGoal from "./create-goal";
 import EditClass from "./edit-class";
 import EditHomework from "./edit-homework";
 import EditGoal from "./edit-goal";
+import EditUser from "./edit-user";
 
 const userContext = createContext({});
 
@@ -32,6 +33,7 @@ function App() {
         <Route path="/edit-class" element={<EditClass />} />
         <Route path="/edit-homework" element={<EditHomework />} />
         <Route path="/edit-goal" element={<EditGoal />} />
+        <Route path="/edit-user" element={<EditUser />} />
       </Routes>
     </userContext.Provider>
   );

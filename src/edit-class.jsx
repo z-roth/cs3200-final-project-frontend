@@ -8,11 +8,44 @@ const EditClass = () => {
   const { state } = useLocation();
   const [name, setName] = useState(state.name);
   const [location, setLocation] = useState(state.location);
+  const [days, setDays] = useState(state.daysOfWeek);
   const [startTime, setStartTime] = useState(state.startTime.substring(0, 5));
   const [endTime, setEndTime] = useState(state.endTime.substring(0, 5));
 
   const user = useContext(userContext);
   const navigate = useNavigate();
+
+  const daysOfWeek = ["M", "T", "W", "Th", "F", "S", "Su"];
+
+  const handleCheckbox = (day) => {
+    console.log(days);
+    var dayChar = convertDay(day);
+
+    days.includes(dayChar)
+      ? setDays(days.replace(dayChar, "").split().sort(comp).join())
+      : setDays((days + dayChar).split("").sort(comp).join(""));
+  };
+
+  const convertDay = (day) => {
+    if (day === "Th") {
+      return "H";
+    }
+    if (day === "Su") {
+      return "U";
+    }
+    return day;
+  };
+
+  const comp = (a, b) => {
+    var compareString = "MTWHFSU";
+    if (compareString.indexOf(a) < compareString.indexOf(b)) {
+      return -1;
+    }
+    if (compareString.indexOf(b) < compareString.indexOf(a)) {
+      return 1;
+    }
+    return 0;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,6 +55,7 @@ const EditClass = () => {
       code: state.code,
       name: name,
       location: location,
+      days: days,
       startTime: startTime,
       endTime: endTime,
     })
@@ -76,6 +110,19 @@ const EditClass = () => {
             defaultValue={location}
             onChange={(e) => setLocation(e.target.value)}
           />
+        </Form.Group>
+        <Form.Group key="inline-checkbox">
+          <Form.Label>Days of Week</Form.Label>
+          <br></br>
+          {daysOfWeek.map((day) => (
+            <Form.Check
+              inline
+              label={day}
+              key={day}
+              onChange={() => handleCheckbox(day)}
+              defaultChecked={state.daysOfWeek.includes(convertDay(day))}
+            />
+          ))}
         </Form.Group>
         <Form.Group className="mb-3">
           <Form.Label>Edit Class Start Time</Form.Label>
