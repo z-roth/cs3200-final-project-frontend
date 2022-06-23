@@ -13,6 +13,8 @@ const Home = () => {
   const [homework, setHomework] = useState([{}]);
   const [goalsLoading, setGoalsLoading] = useState(true);
   const [goals, setGoals] = useState([{}]);
+  const [examsLoading, setExamsLoading] = useState(true);
+  const [exams, setExams] = useState([{}]);
 
   var user = useContext(userContext);
 
@@ -23,13 +25,11 @@ const Home = () => {
       },
     })
       .then((res) => {
-        console.log("Successfully loaded classes.");
-        console.log(res);
         setClasses(res.data);
         setClassesLoading(false);
       })
       .catch((err) => {
-        console.log("Failed to load classes.");
+        // console.log("Failed to load classes.");
       });
   }
 
@@ -54,16 +54,28 @@ const Home = () => {
     })
       .then((res) => {
         setGoals(res.data);
-        console.log("Goals:", res.data);
         setGoalsLoading(false);
       })
       .catch(console.log("Failed to load goals"));
   }
 
+  if (examsLoading) {
+    Axios.get("http://localhost:5000/exams", {
+      params: {
+        email: user.email,
+      },
+    })
+      .then((res) => {
+        setExams(res.data);
+        setExamsLoading(false);
+      })
+      .catch(console.log("Failed to load exams"));
+  }
+
   return (
     <Container className="p-4">
       <h1>Hi, {user.name}.</h1>
-      <Classes isLoading={classesLoading} data={classes} />
+      <Classes isLoading={classesLoading} data={classes} exams={exams} />
       <Homework isLoading={homeworkLoading} data={homework} />
       <Goals isLoading={goalsLoading} data={goals} />
     </Container>

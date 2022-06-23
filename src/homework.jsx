@@ -12,8 +12,6 @@ const Homework = (props) => {
 
   const user = useContext(userContext);
 
-  console.log(data);
-
   const formatDate = (d) => {
     const date = new Date(d);
     return [date.getMonth() + 1, date.getDate(), date.getFullYear()].join("/");
@@ -28,10 +26,10 @@ const Homework = (props) => {
       truthValue: value,
     })
       .then((res) => {
-        console.log("Successfully Checked");
+        //console.log("Successfully Checked");
       })
       .catch((err) => {
-        console.log("Unsuccessfully Checked");
+        //console.log("Unsuccessfully Checked");
       });
   };
 

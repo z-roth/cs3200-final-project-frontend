@@ -7,7 +7,6 @@ const Goals = (props) => {
   const navigate = useNavigate();
   const data = props.data;
   const loading = props.loading;
-  console.log(data);
 
   return loading ? (
     <div>

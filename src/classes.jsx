@@ -6,6 +6,7 @@ const Classes = (props) => {
   const navigate = useNavigate();
   const data = props.data;
   const loading = props.isLoading;
+  const exams = props.exams;
 
   const formatDays = (daysOfWeek) => {
     const days = new Map();
@@ -24,9 +25,6 @@ const Classes = (props) => {
       })
       .join(", ");
   };
-
-  console.log(data);
-  console.log(loading);
 
   return loading ? (
     <div>

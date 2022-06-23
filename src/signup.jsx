@@ -23,7 +23,7 @@ const Signup = (props) => {
         alert("successfully created user");
         console.log(res);
         props.setUser({ name: name, email: email });
-        navigate("/home");
+        navigate("/");
       })
       .catch((err) => {
         console.log("fail");
