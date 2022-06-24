@@ -8,6 +8,21 @@ const Classes = (props) => {
   const loading = props.isLoading;
   const exams = props.exams;
 
+  const formatExams = (code) => {
+    const examsForClass = filterExams(code);
+    console.log(examsForClass, code);
+    const builtExams = examsForClass.map((exam) => (
+      <p>{`${exam.examDate.substring(0, 10)}: ${exam.examName}`}</p>
+    ));
+    return builtExams;
+  };
+
+  const filterExams = (code) => {
+    var examsForClass = exams.filter((exam) => exam.class === code);
+    console.log(code, examsForClass);
+    return examsForClass;
+  };
+
   const formatDays = (daysOfWeek) => {
     const days = new Map();
     days.set("M", "Monday");
@@ -58,7 +73,12 @@ const Classes = (props) => {
                     {course.code}
                     <Button
                       onClick={() => {
-                        navigate("/edit-class", { state: course });
+                        navigate("/edit-class", {
+                          state: {
+                            course: course,
+                            classExams: filterExams(course.code),
+                          },
+                        });
                       }}
                     >
                       Edit Class
@@ -68,6 +88,7 @@ const Classes = (props) => {
                     {course.location}
                     <br></br>
                     {"Exams:"}
+                    {formatExams(course.code)}
                   </Card.Text>
                 </Card.Body>
               </Card>

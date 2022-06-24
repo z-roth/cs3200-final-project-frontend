@@ -10,4 +10,4 @@ Firstly, make sure you have Node installed and added to PATH. You can install No
 
 After verifying node is installed with node -v on the command line, navigate to the root folder of this repository and run `npm install`. This will install all of the dependencies used to build this project. After that is complete, run `npm start` to start the program. By default, the program will run on `localhost:3000`, which you can access from your browser.
 
-All of this setup can be quite complex and there is a lot of room for error. If you need any help at all, please email me and I would be happy to assist.
+All of this setup can be quite complex and there is a lot of room for error. If you need any help at all, please email me and I would be happy to promptly assist!

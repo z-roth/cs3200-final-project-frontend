@@ -1,16 +1,18 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { userContext } from "./App";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, Card } from "react-bootstrap";
 import Axios from "axios";
 
 const EditClass = () => {
   const { state } = useLocation();
-  const [name, setName] = useState(state.name);
-  const [location, setLocation] = useState(state.location);
-  const [days, setDays] = useState(state.daysOfWeek);
-  const [startTime, setStartTime] = useState(state.startTime.substring(0, 5));
-  const [endTime, setEndTime] = useState(state.endTime.substring(0, 5));
+  const [name, setName] = useState(state.course.name);
+  const [location, setLocation] = useState(state.course.location);
+  const [days, setDays] = useState(state.course.daysOfWeek);
+  const [startTime, setStartTime] = useState(
+    state.course.startTime.substring(0, 5)
+  );
+  const [endTime, setEndTime] = useState(state.course.endTime.substring(0, 5));
 
   const user = useContext(userContext);
   const navigate = useNavigate();
@@ -52,7 +54,7 @@ const EditClass = () => {
 
     Axios.put("http://localhost:5000/edit-class", {
       user: user.email,
-      code: state.code,
+      code: state.course.code,
       name: name,
       location: location,
       days: days,
@@ -61,11 +63,24 @@ const EditClass = () => {
     })
       .then((res) => {
         console.log(res);
-        alert("Successfully updated homework.");
+        alert("Successfully updated class.");
+        exams2.forEach((exam) => {
+          console.log(exam);
+          Axios.post("http://localhost:5000/create-exam", {
+            user: user.email,
+            course: state.course.code,
+            name: exam.name,
+            date: exam.date,
+          })
+            .then(() => {
+              alert("Successfully created exam.");
+            })
+            .catch(console.log("Could not create exam: ", exam.name));
+        });
         navigate("/");
       })
       .catch((err) => {
-        alert("Error updating homework");
+        alert("Error updating class");
         console.log(err);
       });
   };
@@ -76,7 +91,7 @@ const EditClass = () => {
     Axios.delete("http://localhost:5000/delete-class", {
       params: {
         email: user.email,
-        code: state.code,
+        code: state.course.code,
       },
     })
       .then((res) => {
@@ -90,10 +105,49 @@ const EditClass = () => {
       });
   };
 
+  const [exams, setExams] = useState(state.classExams);
+
+  const [keyCount, setKeyCount] = useState(0);
+  const [exams2, setExams2] = useState(new Map());
+
+  const handleRemove = (key) => {
+    console.log(key);
+    setExamCards(examCards.filter((examCard) => examCard.key !== key));
+    setExams2(new Map(exams2.delete(`${key}`)));
+  };
+
+  const handleUpdate = (key, data) => {
+    setExams2(new Map(exams2.set(`${key}`, data)));
+    console.log(exams2);
+  };
+
+  const handleNewExam = (e) => {
+    e.preventDefault();
+    setExamCards([
+      ...examCards,
+      <ExamCardUpdate
+        key={keyCount + 1}
+        id={keyCount + 1}
+        handleRemove={handleRemove}
+        handleUpdate={handleUpdate}
+      />,
+    ]);
+    setKeyCount(keyCount + 1);
+  };
+
+  const [examCards, setExamCards] = useState([
+    <ExamCardUpdate
+      key="0"
+      id="0"
+      handleRemove={handleRemove}
+      handleUpdate={handleUpdate}
+    />,
+  ]);
+
   console.log(state);
   return (
     <Container className="p-3">
-      <h1>Edit Class: {state.code}</h1>
+      <h1>Edit Class: {state.course.code}</h1>
       <Form onSubmit={(e) => handleSubmit(e)}>
         <Form.Group className="mb-3">
           <Form.Label>Edit Class Name</Form.Label>
@@ -120,7 +174,7 @@ const EditClass = () => {
               label={day}
               key={day}
               onChange={() => handleCheckbox(day)}
-              defaultChecked={state.daysOfWeek.includes(convertDay(day))}
+              defaultChecked={state.course.daysOfWeek.includes(convertDay(day))}
             />
           ))}
         </Form.Group>
@@ -140,12 +194,98 @@ const EditClass = () => {
             onChange={(e) => setEndTime(e.target.value)}
           />
         </Form.Group>
+        <h4 className="exams-title">
+          Exams<Button onClick={handleNewExam}>New Exam</Button>
+        </h4>
+        {exams.map((exam) => (
+          <ExamCardDelete data={exam} state={state} />
+        ))}
+        {examCards}
         <Button type="submit">Submit</Button>
         <Button variant="danger" onClick={(e) => handleDelete(e)}>
           Delete Class
         </Button>
       </Form>
     </Container>
+  );
+};
+
+const ExamCardDelete = (props) => {
+  const user = useContext(userContext);
+  const deleteExam = (name, date) => {
+    Axios.delete("http://localhost:5000/delete-exam", {
+      params: {
+        user: user.email,
+        course: props.state.course.code,
+        name: name,
+        date: date,
+      },
+    })
+      .then((res) => {
+        console.log(res);
+        alert("Successfully deleted exam.");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Error deleting exam.");
+      });
+  };
+
+  return (
+    <Card className="p-2 mb-2">
+      <Card.Title className="exams-title">
+        {props.data.examName}{" "}
+        <Button
+          variant="danger"
+          onClick={() =>
+            deleteExam(
+              props.data.examName,
+              props.data.examDate.substring(0, 10)
+            )
+          }
+        >
+          Delete Exam
+        </Button>
+      </Card.Title>
+    </Card>
+  );
+};
+
+const ExamCardUpdate = (props) => {
+  const [name, setName] = useState("");
+  const [date, setDate] = useState(0);
+
+  useEffect(() => {
+    console.log(name, date);
+    props.handleUpdate(props.id, { name: name, date: date });
+  }, [name, date, props]);
+
+  return (
+    <Card className="p-2 mb-2">
+      <Card.Title className="exams-title">
+        New Exam{" "}
+        <Button
+          variant="danger"
+          onClick={() => {
+            props.handleRemove(props.id);
+          }}
+        >
+          Remove
+        </Button>
+      </Card.Title>
+      <Form.Group>
+        <Form.Label>Exam Name</Form.Label>
+        <Form.Control
+          type="text"
+          placeholder="Enter exam name"
+          onChange={(e) => setName(e.target.value)}
+        />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Exam Date</Form.Label>
+        <Form.Control type="date" onChange={(e) => setDate(e.target.value)} />
+      </Form.Group>
+    </Card>
   );
 };
 

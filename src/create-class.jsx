@@ -6,13 +6,14 @@ import { userContext } from "./App";
 import "./create-class.css";
 
 const CreateClass = () => {
-  const [keyCount, setKeyCount] = useState(0);
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const [location, setLocation] = useState("");
   const [days, setDays] = useState("");
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
+  
+  const [keyCount, setKeyCount] = useState(0);
   const [exams, setExams] = useState(new Map());
 
   const handleRemove = (key) => {
