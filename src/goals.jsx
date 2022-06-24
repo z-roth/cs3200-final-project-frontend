@@ -42,7 +42,7 @@ const Goals = (props) => {
           Create New Goal
         </Button>
       </div>
-      {data ? (
+      {data.length === 0 ? (
         <h5>No goals to display</h5>
       ) : (
         data.map((goal) => {
