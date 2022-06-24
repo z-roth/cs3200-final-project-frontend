@@ -24,6 +24,7 @@ const EditHomework = () => {
     e.preventDefault();
 
     Axios.put("http://localhost:5000/edit-homework", {
+      hwId: state.hwId,
       user: user.email,
       code: course,
       name: name,
