@@ -38,12 +38,10 @@ const Home = () => {
       params: {
         email: user.email,
       },
-    })
-      .then((res) => {
-        setHomework(res.data);
-        setHomeworkLoading(false);
-      })
-      .catch(console.log("Failed to load homework"));
+    }).then((res) => {
+      setHomework(res.data);
+      setHomeworkLoading(false);
+    });
   }
 
   if (goalsLoading) {
@@ -51,12 +49,10 @@ const Home = () => {
       params: {
         email: user.email,
       },
-    })
-      .then((res) => {
-        setGoals(res.data);
-        setGoalsLoading(false);
-      })
-      .catch(console.log("Failed to load goals"));
+    }).then((res) => {
+      setGoals(res.data);
+      setGoalsLoading(false);
+    });
   }
 
   if (examsLoading) {
@@ -64,12 +60,10 @@ const Home = () => {
       params: {
         email: user.email,
       },
-    })
-      .then((res) => {
-        setExams(res.data);
-        setExamsLoading(false);
-      })
-      .catch(console.log("Failed to load exams"));
+    }).then((res) => {
+      setExams(res.data);
+      setExamsLoading(false);
+    });
   }
 
   return (

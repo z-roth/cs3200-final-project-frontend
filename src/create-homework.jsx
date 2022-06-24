@@ -29,13 +29,11 @@ const CreateHomework = (props) => {
       dueTime: dueTime,
     })
       .then((res) => {
-        console.log(res);
         alert("Successfully created homework.");
         navigate("/");
       })
       .catch((err) => {
         alert("Error creating homework");
-        console.log(err);
       });
   };
 
@@ -44,16 +42,10 @@ const CreateHomework = (props) => {
       params: {
         email: user.email,
       },
-    })
-      .then((res) => {
-        console.log("Successfully loaded classes.");
-        console.log(res);
-        setClasses(res.data);
-        setClassesLoading(false);
-      })
-      .catch((err) => {
-        console.log("Failed to load classes.");
-      });
+    }).then((res) => {
+      setClasses(res.data);
+      setClassesLoading(false);
+    });
   }
 
   return (

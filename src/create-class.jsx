@@ -12,19 +12,17 @@ const CreateClass = () => {
   const [days, setDays] = useState("");
   const [startTime, setStartTime] = useState(0);
   const [endTime, setEndTime] = useState(0);
-  
+
   const [keyCount, setKeyCount] = useState(0);
   const [exams, setExams] = useState(new Map());
 
   const handleRemove = (key) => {
-    console.log(key);
     setExamCards(examCards.filter((examCard) => examCard.key !== key));
     setExams(new Map(exams.delete(`${key}`)));
   };
 
   const handleUpdate = (key, data) => {
     setExams(new Map(exams.set(`${key}`, data)));
-    console.log(exams);
   };
 
   const handleNewExam = (e) => {
@@ -58,7 +56,6 @@ const CreateClass = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(exams);
 
     Axios.post("http://localhost:5000/create-class", {
       user: user.email,
@@ -70,11 +67,9 @@ const CreateClass = () => {
       endTime: endTime,
     })
       .then((res) => {
-        console.log(res);
         alert("Successfully created class.");
 
         exams.forEach((exam) => {
-          console.log(exam);
           Axios.post("http://localhost:5000/create-exam", {
             user: user.email,
             course: code,
@@ -84,13 +79,12 @@ const CreateClass = () => {
             .then(() => {
               alert("Successfully created exam.");
             })
-            .catch(console.log("Could not create exam: ", exam.name));
+            .catch(alert("error creating exam"));
         });
         navigate("/");
       })
       .catch((err) => {
         alert("Error creating class.");
-        console.log(err);
       });
 
     Axios.post("http://localhost:5000/create-exam");
@@ -167,7 +161,6 @@ const CreateClass = () => {
             type="time"
             onChange={(e) => {
               setStartTime(e.target.value);
-              console.log(e.target.value);
             }}
           ></Form.Control>
         </Form.Group>
@@ -195,7 +188,6 @@ const ExamCard = (props) => {
   const [date, setDate] = useState(0);
 
   useEffect(() => {
-    console.log(name, date);
     props.handleUpdate(props.id, { name: name, date: date });
   }, [name, date, props]);
 
